@@ -1,4 +1,3 @@
-// Retrieve dining halls
 async function dataHandler() {
   // Retrieve dining, meals and macros endpoints
   const endpoint1 = '/api/dining';
