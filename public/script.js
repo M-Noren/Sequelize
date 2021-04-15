@@ -1,12 +1,111 @@
 // Retrieve dining halls
 async function dataHandler() {
-  const endpoint = '/api/dining';
-  console.log(endpoint);
-  const request = await fetch(endpoint);
-  const dininghalls = await request.json();
-  return dininghalls;
+  const endpoint1 = '/api/dining';
+  const request1 = await fetch(endpoint1);
+  const dininghalls = await request1.json();
+
+  const endpoint2 = '/api/meals';
+  const request2 = await fetch(endpoint2);
+  const meals = await request2.json();
+
+  const endpoint3 = '/api/macros';
+  const request3 = await fetch(endpoint3);
+  const macros = await request3.json();
+
+  console.log(dininghalls);
+  console.log(meals);
+  console.log(macros);
+
+  function getData(mealss, macross, macro) {
+    data = [];
+    for (i = 0; i < 46; i += 1) {
+      data.push({ label: mealss[i].meal_name, y: eval('macross[i].' + macro)});
+    }
+    return data;
+  }
+
+  
+  console.log(getData(meals, macros, 'calories'));
+
+  const chart = new CanvasJS.Chart('chartContainer', {
+    animationEnabled: true,
+    title: {
+      text: 'Meal Macros'
+    },
+    axisX: {
+      labelFontSize: 10,
+      interval: 1
+    },
+    axisY: {
+      labelFontSize: 10,
+    },
+    toolTip: {
+      shared: true
+    },
+    legend: {
+      cursor: 'pointer',
+      itemclick: toggleDataSeries
+    },
+
+    dataPointWidth: 10,
+
+    data: [{
+      type: 'stackedBar',
+      name: 'Calories',
+      showInLegend: 'true',
+      dataPoints: getData(meals, macros, 'calories')
+    },
+    {
+      type: 'stackedBar',
+      name: 'Carbs',
+      showInLegend: 'true',
+      dataPoints: getData(meals, macros, 'carbs')
+    },
+    {
+      type: 'stackedBar',
+      name: 'Cholesterol',
+      showInLegend: 'true',
+      dataPoints: getData(meals, macros, 'cholesterol')
+    },
+    {
+      type: 'stackedBar',
+      name: 'Fat',
+      showInLegend: 'true',
+      dataPoints: getData(meals, macros, 'fat')
+    },
+    {
+      type: 'stackedBar',
+      name: 'Protein',
+      showInLegend: 'true',
+      dataPoints: getData(meals, macros, 'protein')
+    },
+    {
+      type: 'stackedBar',
+      name: 'Sodium',
+      showInLegend: 'true',
+      dataPoints: getData(meals, macros, 'sodium')
+    }
+    ]
+
+  });
+
+  chart.render();
+
+  function toggleDataSeries(e) {
+    if (typeof (e.dataSeries.visible) === 'undefined' || e.dataSeries.visible) {
+      e.dataSeries.visible = false;
+    } else {
+      e.dataSeries.visible = true;
+    }
+    chart.render();
+  }
+
+
+
+
 
 }
+dataHandler();
 
 // // This function loads the dining halls into the table
 // function loadTableData(data) {
@@ -27,117 +126,5 @@ async function dataHandler() {
 //   }
 // })
 
-
-
-
 window.onload = () => {
-  const chart = new CanvasJS.Chart('chartContainer', {
-    animationEnabled: true,
-    title: {
-      text: 'Meal Macros'
-    },
-    axisX: {
-      valueFormatString: 'DDD'
-    },
-    axisY: {
-      prefix: '$'
-    },
-    toolTip: {
-      shared: true
-    },
-    legend: {
-      cursor: 'pointer',
-      itemclick: toggleDataSeries
-    },
-    data: [{
-      type: 'stackedBar',
-      name: 'Meals',
-      showInLegend: 'true',
-      xValueFormatString: 'DD, MMM',
-      yValueFormatString: '$#,##0',
-      dataPoints: [
-        { x: new Date(2017, 0, 30), y: 56 },
-        { x: new Date(2017, 0, 31), y: 45 },
-        { x: new Date(2017, 1, 1), y: 71 },
-        { x: new Date(2017, 1, 2), y: 41 },
-        { x: new Date(2017, 1, 3), y: 60 },
-        { x: new Date(2017, 1, 4), y: 75 },
-        { x: new Date(2017, 1, 5), y: 98 }
-      ]
-    },
-    {
-      type: 'stackedBar',
-      name: 'Snacks',
-      showInLegend: 'true',
-      xValueFormatString: 'DD, MMM',
-      yValueFormatString: '$#,##0',
-      dataPoints: [
-        { x: new Date(2017, 0, 30), y: 86 },
-        { x: new Date(2017, 0, 31), y: 95 },
-        { x: new Date(2017, 1, 1), y: 71 },
-        { x: new Date(2017, 1, 2), y: 58 },
-        { x: new Date(2017, 1, 3), y: 60 },
-        { x: new Date(2017, 1, 4), y: 65 },
-        { x: new Date(2017, 1, 5), y: 89 }
-      ]
-    },
-    {
-      type: 'stackedBar',
-      name: 'Drinks',
-      showInLegend: 'true',
-      xValueFormatString: 'DD, MMM',
-      yValueFormatString: '$#,##0',
-      dataPoints: [
-        { x: new Date(2017, 0, 30), y: 48 },
-        { x: new Date(2017, 0, 31), y: 45 },
-        { x: new Date(2017, 1, 1), y: 41 },
-        { x: new Date(2017, 1, 2), y: 55 },
-        { x: new Date(2017, 1, 3), y: 80 },
-        { x: new Date(2017, 1, 4), y: 85 },
-        { x: new Date(2017, 1, 5), y: 83 }
-      ]
-    },
-    {
-      type: 'stackedBar',
-      name: 'Dessert',
-      showInLegend: 'true',
-      xValueFormatString: 'DD, MMM',
-      yValueFormatString: '$#,##0',
-      dataPoints: [
-        { x: new Date(2017, 0, 30), y: 61 },
-        { x: new Date(2017, 0, 31), y: 55 },
-        { x: new Date(2017, 1, 1), y: 61 },
-        { x: new Date(2017, 1, 2), y: 75 },
-        { x: new Date(2017, 1, 3), y: 80 },
-        { x: new Date(2017, 1, 4), y: 85 },
-        { x: new Date(2017, 1, 5), y: 105 }
-      ]
-    },
-    {
-      type: 'stackedBar',
-      name: 'Takeaway',
-      showInLegend: 'true',
-      xValueFormatString: 'DD, MMM',
-      yValueFormatString: '$#,##0',
-      dataPoints: [
-        { x: new Date(2017, 0, 30), y: 52 },
-        { x: new Date(2017, 0, 31), y: 55 },
-        { x: new Date(2017, 1, 1), y: 20 },
-        { x: new Date(2017, 1, 2), y: 35 },
-        { x: new Date(2017, 1, 3), y: 30 },
-        { x: new Date(2017, 1, 4), y: 45 },
-        { x: new Date(2017, 1, 5), y: 25 }
-      ]
-    }]
-  });
-  chart.render();
-
-  function toggleDataSeries(e) {
-    if (typeof (e.dataSeries.visible) === 'undefined' || e.dataSeries.visible) {
-      e.dataSeries.visible = false;
-    } else {
-      e.dataSeries.visible = true;
-    }
-    chart.render();
-  }
 };
