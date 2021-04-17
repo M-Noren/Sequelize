@@ -1,4 +1,5 @@
 async function dataHandler() {
+
   // Retrieve dining, meals and macros endpoints
   const endpoint1 = '/api/dining';
   const request1 = await fetch(endpoint1);
@@ -16,11 +17,18 @@ async function dataHandler() {
   console.log(meals);
   console.log(macros);
 
+  function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
   // This function extracts the datapoints we need from the data collected above
   function getData(mealss, macross, macro) {
     data = [];
-    for (i = 0; i < 46; i += 1) {
-      data.push({ label: mealss[i].meal_name, y: eval(`macross[i].${macro}`)});
+    for (i = 0; i < 10; i += 1) {
+      p = getRandomIntInclusive(0, 45);
+      data.push({ label: mealss[p].meal_name, y: eval(`macross[p].${macro}`)});
     }
     return data;
   }
